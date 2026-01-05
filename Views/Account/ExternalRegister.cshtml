@@ -1,0 +1,39 @@
+﻿@model Obrasci.ViewModels.ExternalRegisterViewModel
+
+@{
+    ViewData["Title"] = "Complete registration";
+}
+
+<h2>Complete registration</h2>
+<p>
+    You are signing in with @Model.LoginProvider.
+    Please confirm your email and choose a package.
+</p>
+
+<form asp-action="ExternalRegister" method="post">
+    <input type="hidden" asp-for="ReturnUrl" />
+    <input type="hidden" asp-for="LoginProvider" />
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Package" class="form-label">Package</label>
+        <select asp-for="Package" class="form-select"
+                asp-items="Html.GetEnumSelectList<Obrasci.Models.PackageType>()">
+            <option value="">-- choose package --</option>
+        </select>
+        <span asp-validation-for="Package" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Continue</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

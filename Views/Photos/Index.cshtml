@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<Obrasci.Models.Photo>
+
+@{
+    ViewData["Title"] = "Latest Photos";
+}
+
+<h2>Latest Photos</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="alert alert-info">
+        Package: <strong>@ViewBag.Package</strong>,
+        uploads today: <strong>@ViewBag.DailyCount</strong>
+    </div>
+}
+
+
+<div class="row">
+    @foreach (var photo in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <a asp-action="Details" asp-route-id="@photo.Id">
+                    <img class="card-img-top" src="~/@photo.StoragePath" alt="@photo.Description" />
+                </a>
+                <div class="card-body">
+                    <p class="card-text">@photo.Description</p>
+                    <small class="text-muted">
+                        by @photo.User?.UserName on @photo.UploadedAt.ToLocalTime()
+                    </small>
+                    <div>
+                        <small>@photo.Hashtags</small>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

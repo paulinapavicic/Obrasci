@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4 mb-3">Welcome</h1>
+    <p class="lead">
+        This application is a photo management web application where you can upload, search,
+        and manage your images with usage limits based on your selected package (Free, Pro, or Gold). 
+    </p>
+    <p>
+        Anonymous visitors can browse photos, while registered users can upload images, edit their descriptions and hashtags,
+        and track how much of their package quota they have used. 
+    </p>
+    <p>
+        Administrators can manage users, review activity logs, and moderate photos across the entire application. 
+    </p>
+
+
+    <section class="mt-5">
+        <h3 class="text-center mb-4">Latest photos</h3>
+        <div class="row g-3">
+            @foreach (var photo in ViewBag.LatestPhotos as IEnumerable<Obrasci.Models.Photo> ?? Enumerable.Empty<Obrasci.Models.Photo>())
+            {
+                <div class="col-6 col-md-3">
+                    <div class="card h-100">
+                        <img src="@Url.Action("Download", "Photos", new { id = photo.Id })"
+                             class="card-img-top" alt="Photo" />
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    
+</div>

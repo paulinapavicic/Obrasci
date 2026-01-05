@@ -1,0 +1,42 @@
+﻿@model Obrasci.ViewModels.AdminUserStatsViewModel
+
+<h2 class="mb-4">User statistics</h2>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <div class="text-muted small">User</div>
+                <div class="h5 mb-0">@Model.User.Email</div>
+            </div>
+            <span class="badge bg-primary px-3 py-2">
+                @Model.User.Package
+            </span>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row text-center">
+            <div class="col-6 col-md-3 mb-3">
+                <div class="text-muted small">Package</div>
+                <div class="fw-semibold">@Model.User.Package</div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="text-muted small">Total photos</div>
+                <div class="fw-semibold">@Model.TotalPhotos</div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="text-muted small">Storage used</div>
+                <div class="fw-semibold">
+                    @(Model.TotalSizeBytes / (1024 * 1024)) MB
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="text-muted small">User id</div>
+                <div class="small text-break">@Model.User.Id</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Users" class="btn btn-outline-secondary">Back to users</a>

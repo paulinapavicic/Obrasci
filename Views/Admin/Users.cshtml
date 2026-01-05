@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Obrasci.Models.ApplicationUser>
+@using Obrasci.Models
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Package</th>
+            <th>Change package</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.Email</td>
+                <td>@u.Package</td>
+                <td>
+                    <form asp-action="ChangePackage" method="post" class="d-inline">
+                        <input type="hidden" name="userId" value="@u.Id" />
+                        <select name="package" class="form-select form-select-sm"
+                                asp-items="Html.GetEnumSelectList<PackageType>()"></select>
+                        <button type="submit" class="btn btn-sm btn-primary mt-1">Save</button>
+                    </form>
+                </td>
+                <td>
+                    <a asp-action="UserDetails" asp-route-id="@u.Id" class="btn btn-sm btn-secondary">
+                        Stats
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Obrasci.Models.Photo>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>User</th>
+            <th>Description</th>
+            <th>Uploaded</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Id</td>
+                <td>@p.UserId</td>
+                <td>@p.Description</td>
+                <td>@p.UploadedAt</td>
+                <td>
+                    <form asp-action="DeletePhoto" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@p.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

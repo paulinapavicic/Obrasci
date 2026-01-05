@@ -1,0 +1,42 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Photo Details";
+}
+
+<h2>Photo Details</h2>
+
+<div class="card mb-3">
+    <img class="card-img-top" src="~/@Model.StoragePath" alt="@Model.Description" />
+    <div class="card-body">
+        <p class="card-text">@Model.Description</p>
+        <p>
+            <strong>Author:</strong> @Model.User?.UserName<br />
+            <strong>Uploaded:</strong> @Model.UploadedAt.ToLocalTime()<br />
+            <strong>Size:</strong> @Model.SizeBytes bytes<br />
+            <strong>Hashtags:</strong> @Model.Hashtags
+        </p>
+     <p>
+            @if (User.Identity?.IsAuthenticated ?? false &&
+                        Model.UserId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-secondary">Edit</a>
+            }
+     </p>
+        <p>
+            <a asp-action="Download" asp-route-id="@Model.Id" class="btn btn-primary">
+                Download original
+            </a>
+            <a asp-action="DownloadProcessed" asp-route-id="@Model.Id" asp-route-option="Resize800"
+               class="btn btn-outline-secondary ms-2">
+                Download 800px
+            </a>
+            <a asp-action="DownloadProcessed" asp-route-id="@Model.Id" asp-route-option="Grayscale"
+               class="btn btn-outline-secondary ms-2">
+                Download grayscale
+            </a>
+        </p>
+
+    </div>
+</div>

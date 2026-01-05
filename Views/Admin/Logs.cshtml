@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Obrasci.Models.UserActionLog>
+
+@{
+    ViewData["Title"] = "User Action Logs";
+}
+
+<h2 class="mb-4">User action logs</h2>
+
+<div class="card shadow-sm">
+   
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-sm table-striped mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 180px;">Time</th>
+                        <th style="width: 260px;">User</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var log in Model)
+                    {
+                        <tr>
+                            <td class="text-muted small">
+                                @log.Timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                            </td>
+                            <td class="small">
+                                <div>@log.UserEmail</div>
+                                <div class="text-muted">@log.UserId</div>
+                            </td>
+                            <td>@log.Action</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

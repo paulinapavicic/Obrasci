@@ -29,6 +29,7 @@ namespace Obrasci.Data
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
             {
+                //Factory Method- creating users
                 adminUser = new ApplicationUser
                 {
                     UserName = adminEmail,

@@ -43,6 +43,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<ILoggingService, LoggingService>();
+//Singletons- for Image processing
 builder.Services.AddSingleton<IImageProcessingStrategy, OriginalStrategy>();
 builder.Services.AddSingleton<IImageProcessingStrategy, ResizeStrategy>();
 builder.Services.AddSingleton<IImageProcessingStrategy, GrayscaleStrategy>();

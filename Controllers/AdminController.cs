@@ -12,6 +12,7 @@ namespace Obrasci.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
+        //Dependency Injection 
         private readonly ApplicationDbContext _ctx;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IActionLogger _actionLogger;
@@ -94,7 +95,7 @@ namespace Obrasci.Controllers
             return View(model);
         }
 
-
+        // Repository pattern: use DbSet<Photo> (EF Core) to load photos + users via LINQ
         public async Task<IActionResult> Photos()
         {
             var photos = await _ctx.Photos
@@ -128,7 +129,7 @@ namespace Obrasci.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return NotFound();
 
-            // Update Email and UserName 
+            
             user.UserName = email;
             user.Email = email;
 
@@ -143,7 +144,7 @@ namespace Obrasci.Controllers
                 var users = await _ctx.Users.ToListAsync();
                 return View("Users", users);
             }
-
+            //Observer- looging when some action happens
             await _actionLogger.LogAsync(User, $"Changed email of user {user.Id} to {email}");
 
             return RedirectToAction(nameof(Users));

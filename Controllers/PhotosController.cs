@@ -11,6 +11,7 @@ namespace Obrasci.Controllers
    
     public class PhotosController : Controller
     {
+        //Dependency Injection 
         private readonly IPhotoService _photoService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
@@ -45,6 +46,7 @@ namespace Obrasci.Controllers
             return View();
         }
 
+        //Strategy pattern- image processing option
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(IFormFile photoFile, string? description, string? hashtags, string? processingOption)
@@ -68,6 +70,7 @@ namespace Obrasci.Controllers
 
             user = await EnsurePackageUpToDate(user);
 
+            //Adapter- for storing photos locally
             await _photoService.UploadAsync(user, photoFile, description, hashtags, processingOption);
 
             await _actionLogger.LogAsync(User,
@@ -166,7 +169,7 @@ namespace Obrasci.Controllers
             var photo = await _context.Photos.FindAsync(id);
             if (photo == null) return NotFound();
 
-            if (photo.UserId != user!.Id) return Forbid(); // only owner can edit
+            if (photo.UserId != user!.Id) return Forbid();
 
             var model = new PhotoEditViewModel
             {

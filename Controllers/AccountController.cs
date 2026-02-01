@@ -11,6 +11,8 @@ namespace Obrasci.Controllers
 {
     public class AccountController : Controller
     {
+
+        //Dependency Injection 
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
@@ -66,7 +68,7 @@ namespace Obrasci.Controllers
         }
 
 
-
+        //Adapter- adapts Google/Github into my internal user model 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(string provider, string? returnUrl = null)
@@ -86,6 +88,7 @@ namespace Obrasci.Controllers
                 return RedirectToAction(nameof(Login));
             }
 
+            //Adapter- adapts Google/Github into my internal user model 
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
                 return RedirectToAction(nameof(Login));
@@ -119,7 +122,7 @@ namespace Obrasci.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            
+            //Adapter- adapts Google/Github into my internal user model 
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
                 return RedirectToAction(nameof(Login));
@@ -128,6 +131,7 @@ namespace Obrasci.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
+                //Factory Method- creating users
                 user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -174,6 +178,7 @@ namespace Obrasci.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            //Factory Method- creating users
             var user = new ApplicationUser
             {
                 UserName = model.Email,
@@ -207,13 +212,14 @@ namespace Obrasci.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Challenge();
 
-            // Diagnostic: check roles and IsInRole
+           
             var roles = await _userManager.GetRolesAsync(user);
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
             Console.WriteLine($"User: {user.Email}, Roles: {string.Join(',', roles)}, IsAdmin: {isAdmin}");
 
             user = await EnsurePackageUpToDate(user);
 
+            // Repository pattern: query Photos via DbSet instead of raw SQL
             var totalPhotos = await _context.Photos
                 .CountAsync(p => p.UserId == user.Id);
 
@@ -221,6 +227,7 @@ namespace Obrasci.Controllers
                 .Where(p => p.UserId == user.Id)
                 .SumAsync(p => p.SizeBytes);
 
+            //Strategy pattern- rules per package
             var model = new UsageViewModel
             {
                 Package = user.Package,

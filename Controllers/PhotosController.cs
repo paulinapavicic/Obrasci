@@ -49,6 +49,12 @@ namespace Obrasci.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(IFormFile photoFile, string? description, string? hashtags, string? processingOption)
         {
+            if (!User.Identity?.IsAuthenticated ?? false)
+            {
+                TempData["Error"] = "You must be logged in to upload photos.";
+                return RedirectToAction("Login", "Account");
+            }
+
             if (photoFile == null || photoFile.Length == 0)
             {
                 ModelState.AddModelError("photoFile", "Photo file is required.");

@@ -121,8 +121,35 @@ namespace Obrasci.Controllers
             return RedirectToAction(nameof(Photos));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeEmail(string userId, string email)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
 
-      
+            // Update Email and UserName 
+            user.UserName = email;
+            user.Email = email;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+               
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+
+               
+                var users = await _ctx.Users.ToListAsync();
+                return View("Users", users);
+            }
+
+            await _actionLogger.LogAsync(User, $"Changed email of user {user.Id} to {email}");
+
+            return RedirectToAction(nameof(Users));
+        }
+
+
 
     }
 }

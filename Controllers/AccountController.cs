@@ -186,14 +186,19 @@ namespace Obrasci.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: true);
+                TempData["Success"] = "Registration successful. You are now logged in.";
                 return RedirectToAction("Index", "Home");
             }
-
             foreach (var error in result.Errors)
+            {
                 ModelState.AddModelError(string.Empty, error.Description);
+                Console.WriteLine(error.Code + " - " + error.Description);
+            }
 
+            TempData["Error"] = "Registration failed. Please fix the errors and try again.";
             return View(model);
         }
+
 
 
         [Authorize]
@@ -202,6 +207,11 @@ namespace Obrasci.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Challenge();
 
+            // Diagnostic: check roles and IsInRole
+            var roles = await _userManager.GetRolesAsync(user);
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            Console.WriteLine($"User: {user.Email}, Roles: {string.Join(',', roles)}, IsAdmin: {isAdmin}");
+
             user = await EnsurePackageUpToDate(user);
 
             var totalPhotos = await _context.Photos
@@ -209,7 +219,7 @@ namespace Obrasci.Controllers
 
             var totalSize = await _context.Photos
                 .Where(p => p.UserId == user.Id)
-                .SumAsync(p => p.SizeBytes); 
+                .SumAsync(p => p.SizeBytes);
 
             var model = new UsageViewModel
             {
@@ -222,6 +232,7 @@ namespace Obrasci.Controllers
 
             return View(model);
         }
+
 
 
         private async Task<ApplicationUser> EnsurePackageUpToDate(ApplicationUser user)

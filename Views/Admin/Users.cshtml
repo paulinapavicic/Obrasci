@@ -14,7 +14,13 @@
         @foreach (var u in Model)
         {
             <tr>
-                <td>@u.Email</td>
+                <td>
+                    <form asp-action="ChangeEmail" method="post" class="d-flex gap-1">
+                        <input type="hidden" name="userId" value="@u.Id" />
+                        <input class="form-control form-control-sm" name="email" value="@u.Email" />
+                        <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                    </form>
+                </td>
                 <td>@u.Package</td>
                 <td>
                     <form asp-action="ChangePackage" method="post" class="d-inline">

@@ -15,7 +15,7 @@
         {
             <tr>
                 <td>@p.Id</td>
-                <td>@p.UserId</td>
+                <td>@(p.User?.Email ?? p.UserId)</td>
                 <td>@p.Description</td>
                 <td>@p.UploadedAt</td>
                 <td>

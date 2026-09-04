@@ -19,22 +19,24 @@
 
 
 <div class="row">
-    @foreach (var photo in Model)
+    @foreach (var item in Model)
     {
         <div class="col-md-3 mb-4">
             <div class="card">
-                <a asp-action="Details" asp-route-id="@photo.Id">
-                    <img class="card-img-top" src="~/@photo.StoragePath" alt="@photo.Description" />
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    <img class="card-img-top"
+                         src="~/@item.StoragePath"
+                         alt="@item.Description" />
                 </a>
+
                 <div class="card-body">
-                    <p class="card-text">@photo.Description</p>
+                    <p class="card-text">@item.Description</p>
                     <small class="text-muted">
-                        by @photo.User?.UserName on @photo.UploadedAt.ToLocalTime()
+                        by @item.User?.UserName on @item.UploadedAt.ToLocalTime()
                     </small>
                     <div>
-                        <small>@photo.Hashtags</small>
+                        <small>@item.Hashtags</small>
                     </div>
-
                 </div>
             </div>
         </div>

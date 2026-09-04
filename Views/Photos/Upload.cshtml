@@ -6,24 +6,24 @@
 
 <form asp-action="Upload" method="post" enctype="multipart/form-data">
     <div class="mb-3">
-        <label class="form-label">Photo file</label>
-        <input type="file" name="photoFile" class="form-control" />
+        <label for="photoFile" class="form-label">Photo file</label>
+        <input id="photoFile" type="file" name="photoFile" class="form-control" />
         
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Description</label>
-        <input type="text" name="description" class="form-control" />
+        <label for="description" class="form-label">Description</label>
+        <input id="description" type="text" name="description" class="form-control" />
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Hashtags</label>
-        <input type="text" name="hashtags" class="form-control" placeholder="#cat #sunset" />
+        <label for="hashtags" class="form-label">Hashtags</label>
+        <input id="hashtags" type="text" name="hashtags" class="form-control" />
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Processing</label>
-        <select name="processingOption" class="form-select">
+        <label for="processingOption" class="form-label">Processing</label>
+        <select id="processingOption" name="processingOption" class="form-select">
             <option value="Original">Original</option>
             <option value="Resize800">Resize to 800px</option>
             <option value="Grayscale">Grayscale</option>

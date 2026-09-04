@@ -14,3 +14,5 @@ namespace Obrasci.ViewModels
         public string FilterDescription { get; set; } = string.Empty;
     }
 }
+    
+

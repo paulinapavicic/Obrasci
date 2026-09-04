@@ -112,7 +112,7 @@ namespace Obrasci.Controllers
 
         [AllowAnonymous]
         public async Task<IActionResult> Search(string? hashtag, long? minSize, long? maxSize,
-                                        DateTime? from, DateTime? to, string? author)
+                                            DateTime? from, DateTime? to, string? author)
         {
             var results = await _photoService.SearchAsync(hashtag, minSize, maxSize, from, to, author);
             ViewBag.Hashtag = hashtag;
@@ -142,7 +142,7 @@ namespace Obrasci.Controllers
             }
         }
 
-      
+
         [AllowAnonymous]
         public async Task<IActionResult> DownloadProcessed(Guid id, string option)
         {
@@ -152,14 +152,20 @@ namespace Obrasci.Controllers
                 var contentType = "image/jpeg";
                 var downloadName = Path.GetFileNameWithoutExtension(photo.FileName)
                                    + $"_{option}.jpg";
+
                 return File(bytes, contentType, downloadName);
             }
             catch (FileNotFoundException)
             {
                 return NotFound();
             }
+            catch (Exception ex)
+            {
+              
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "An error occurred while downloading the processed photo.");
+            }
         }
-
 
         [Authorize]
         [HttpGet]

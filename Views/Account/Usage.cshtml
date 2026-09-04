@@ -7,12 +7,14 @@
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">Your package</h5>
             </div>
+
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div>
                         <div class="text-muted small">Current package</div>
                         <div class="h5 mb-0">@Model.Package</div>
                     </div>
+
                     <span class="badge bg-outline-primary border border-primary text-primary px-3 py-2">
                         @Model.Package
                     </span>
@@ -27,18 +29,29 @@
                             @Model.DailyUploadCount / @Model.DailyUploadLimit
                         </span>
                     </div>
+
                     @{
                         var percent = Model.DailyUploadLimit == 0
                         ? 0
                         : (int)(100.0 * Model.DailyUploadCount / Model.DailyUploadLimit);
-                        if (percent > 100) { percent = 100; }
+
+                        if (percent > 100)
+                        {
+                            percent = 100;
+                        }
                     }
-                    <div class="progress" style="height: 0.75rem;">
-                        <div class="progress-bar bg-success" role="progressbar"
-                             style="width:@percent%"
-                             aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100">
-                        </div>
-                    </div>
+
+                    <label for="dailyUploadProgress" class="form-label">
+                        Daily upload limit used: @percent%
+                    </label>
+
+                    <progress id="dailyUploadProgress"
+                              class="w-100"
+                              style="height: 0.75rem;"
+                              value="@percent"
+                              max="100">
+                        @percent%
+                    </progress>
                 </div>
 
                 <div class="row text-center">
@@ -46,6 +59,7 @@
                         <div class="text-muted small">Total photos</div>
                         <div class="fw-semibold">@Model.TotalPhotos</div>
                     </div>
+
                     <div class="col-6">
                         <div class="text-muted small">Storage used</div>
                         <div class="fw-semibold">
@@ -62,20 +76,31 @@
             <div class="card-header bg-light">
                 <h5 class="mb-0">Change package</h5>
             </div>
+
             <div class="card-body">
                 @if (TempData["Error"] != null)
                 {
                     <div class="alert alert-danger">@TempData["Error"]</div>
                 }
+
                 @if (TempData["Message"] != null)
                 {
                     <div class="alert alert-success">@TempData["Message"]</div>
                 }
 
-                <form asp-action="ChangePackage" asp-controller="Account" method="post" class="mt-2">
+                <form asp-action="ChangePackage"
+                      asp-controller="Account"
+                      method="post"
+                      class="mt-2">
+
                     <div class="mb-3">
-                        <label class="form-label">Select new package</label>
-                        <select name="newPackage" class="form-select">
+                        <label for="newPackage" class="form-label">
+                            Select new package
+                        </label>
+
+                        <select id="newPackage"
+                                name="newPackage"
+                                class="form-select">
                             @foreach (PackageType pkg in Enum.GetValues(typeof(PackageType)))
                             {
                                 <option value="@pkg" selected="@(pkg == Model.Package)">
@@ -83,10 +108,12 @@
                                 </option>
                             }
                         </select>
+
                         <div class="form-text">
                             Change is allowed once per day and becomes effective tomorrow.
                         </div>
                     </div>
+
                     <button type="submit" class="btn btn-primary">
                         Schedule change
                     </button>

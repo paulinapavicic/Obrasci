@@ -1,0 +1,172 @@
+﻿@model Obrasci.ViewModels.FunctionalDemoViewModel
+
+@{
+    ViewData["Title"] = "Functional Programming Demo";
+}
+
+<style>
+    .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .demo-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 16px;
+        background: #fafafa;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .demo-card h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .demo-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 24px;
+    }
+
+    .demo-table th, .demo-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .demo-table th {
+        background: #f0f0f0;
+    }
+
+    .demo-section {
+        margin-bottom: 32px;
+    }
+
+    .demo-badge {
+        display: inline-block;
+        background: #0d6efd;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        margin: 4px 6px 0 0;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1>Functional Programming Demo</h1>
+    <p>
+        This page demonstrates functional programming helpers from <code>PhotoFunctional</code>
+        using sample photo data.
+    </p>
+
+    <div class="demo-grid">
+        <div class="demo-card">
+            <h3>Total photos</h3>
+            <p>@Model.SamplePhotos.Count</p>
+        </div>
+        <div class="demo-card">
+            <h3>Total bytes</h3>
+            <p>@Model.TotalBytes.ToString("N0") bytes</p>
+        </div>
+        <div class="demo-card">
+            <h3>Filtered photos</h3>
+            <p>@Model.FilteredPhotos.Count</p>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Sample data</h2>
+        <table class="demo-table">
+            <thead>
+                <tr>
+                    <th>File name</th>
+                    <th>Description</th>
+                    <th>Hashtags</th>
+                    <th>Size (bytes)</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var photo in Model.SamplePhotos)
+                {
+                    <tr>
+                        <td>@photo.FileName</td>
+                        <td>@photo.Description</td>
+                        <td>@photo.Hashtags</td>
+                        <td>@photo.SizeBytes.ToString("N0")</td>
+                        <td>@(photo.User?.UserName ?? "unknown")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="demo-section">
+        <h2>1. FilterBy + And</h2>
+        <p><strong>Rule:</strong> @Model.FilterDescription</p>
+
+        <table class="demo-table">
+            <thead>
+                <tr>
+                    <th>File name</th>
+                    <th>Hashtags</th>
+                    <th>Size (bytes)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var photo in Model.FilteredPhotos)
+                {
+                    <tr>
+                        <td>@photo.FileName</td>
+                        <td>@photo.Hashtags</td>
+                        <td>@photo.SizeBytes.ToString("N0")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="demo-section">
+        <h2>2. ToFileNames</h2>
+        <ul>
+            @foreach (var fileName in Model.FileNames)
+            {
+                <li>@fileName</li>
+            }
+        </ul>
+    </div>
+
+    <div class="demo-section">
+        <h2>3. ParseHashtags</h2>
+        <p>Input: <code>#summer, beach #sea travel</code></p>
+        @foreach (var tag in Model.ParsedHashtags)
+        {
+            <span class="demo-badge">#@tag</span>
+        }
+    </div>
+
+    <div class="demo-section">
+        <h2>4. CountByAuthor</h2>
+        <table class="demo-table">
+            <thead>
+                <tr>
+                    <th>Author</th>
+                    <th>Photo count</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CountByAuthor)
+                {
+                    <tr>
+                        <td>@item.Key</td>
+                        <td>@item.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

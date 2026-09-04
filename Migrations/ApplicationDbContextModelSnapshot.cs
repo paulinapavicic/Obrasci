@@ -273,33 +273,37 @@ namespace Obrasci.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Photos");
+                    b.ToTable("Photos", (string)null);
                 });
 
             modelBuilder.Entity("Obrasci.Models.UserActionLog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
+                    b.Property<string>("ActionName")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EntityId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EntityType")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserActionLog");
+                    b.ToTable("UserActionLogs", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

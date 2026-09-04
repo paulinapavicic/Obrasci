@@ -1,7 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model IEnumerable<Obrasci.Models.Photo>
+﻿@model IEnumerable<Obrasci.Models.Photo>
 
 @{
     ViewData["Title"] = "Search Photos";
@@ -11,50 +8,64 @@
 
 <form asp-action="Search" method="get" class="row g-3 mb-4">
     <div class="col-md-3">
-        <label class="form-label">Hashtag</label>
-        <input type="text" name="hashtag" value="@ViewBag.Hashtag" class="form-control" placeholder="#cat" />
+        <label for="hashtag" class="form-label">Hashtag</label>
+        <input id="hashtag"
+               type="text"
+               name="hashtag"
+               value="@Html.Encode(ViewBag.Hashtag)"
+               class="form-control"
+               placeholder="#cat" />
     </div>
+
     <div class="col-md-2">
-        <label class="form-label">Min size (bytes)</label>
-        <input type="number" name="minSize" value="@ViewBag.MinSize" class="form-control" />
+        <label for="minSize" class="form-label">Min size (bytes)</label>
+        <input id="minSize" type="number" name="minSize" class="form-control" />
     </div>
+
     <div class="col-md-2">
-        <label class="form-label">Max size (bytes)</label>
-        <input type="number" name="maxSize" value="@ViewBag.MaxSize" class="form-control" />
+        <label for="maxSize" class="form-label">Max size (bytes)</label>
+        <input id="maxSize" type="number" name="maxSize" class="form-control" />
     </div>
+
     <div class="col-md-2">
-        <label class="form-label">From</label>
-        <input type="date" name="from" value="@ViewBag.From" class="form-control" />
+        <label for="from" class="form-label">From</label>
+        <input id="from" type="date" name="from" class="form-control" />
     </div>
+
     <div class="col-md-2">
-        <label class="form-label">To</label>
-        <input type="date" name="to" value="@ViewBag.To" class="form-control" />
+        <label for="to" class="form-label">To</label>
+        <input id="to" type="date" name="to" class="form-control" />
     </div>
+
     <div class="col-md-3">
-        <label class="form-label">Author</label>
-        <input type="text" name="author" value="@ViewBag.Author" class="form-control" />
+        <label for="author" class="form-label">Author</label>
+        <input id="author" type="text" name="author" class="form-control" />
     </div>
+
     <div class="col-12">
         <button type="submit" class="btn btn-primary">Search</button>
     </div>
 </form>
 
 <div class="row">
-    @foreach (var photo in Model)
+    @foreach (var item in Model)
     {
         <div class="col-md-3 mb-4">
             <div class="card">
-                <a asp-action="Details" asp-route-id="@photo.Id">
-                    <img class="card-img-top" src="~/@photo.StoragePath" alt="@photo.Description" />
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    <img class="card-img-top"
+                         src="~/@Html.Encode(item.StoragePath)"
+                         alt="@Html.Encode(item.Description)" />
                 </a>
+
                 <div class="card-body">
-                    <p class="card-text">@photo.Description</p>
+                    <p class="card-text">
+                        @Html.Encode(item.Description)
+                    </p>
+
                     <small class="text-muted">
-                        by @photo.User?.UserName on @photo.UploadedAt.ToLocalTime()
+                        by @Html.Encode(item.User?.UserName) on @item.UploadedAt.ToLocalTime()
                     </small>
-                    <div>
-                        <small>@photo.Hashtags</small>
-                    </div>
                 </div>
             </div>
         </div>
